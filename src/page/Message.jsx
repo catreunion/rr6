@@ -7,9 +7,9 @@ import LoadingButton from "@mui/lab/LoadingButton"
 import SearchIcon from "@mui/icons-material/Search"
 
 import alchemyLogo from "../asset/alchemyLogo.svg"
-import abi from "../asset/AlchemyMsg.json"
+import abi from "../asset/Message.json"
 
-const Week01 = () => {
+const Message = () => {
   const [hasMetamask, setHasMetamask] = useState(false)
   const [isConnected, setIsConnected] = useState(false)
   const [myAddr, setMyAddr] = useState("")
@@ -113,4 +113,4 @@ const Week01 = () => {
   )
 }
 
-export default Week01
+export default Message
