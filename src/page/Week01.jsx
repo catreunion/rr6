@@ -6,7 +6,7 @@ import { Typography, TextField, Stack, Button } from "@mui/material"
 import LoadingButton from "@mui/lab/LoadingButton"
 import SearchIcon from "@mui/icons-material/Search"
 
-import alchemylogo from "../asset/alchemylogo.svg"
+import alchemyLogo from "../asset/alchemyLogo.svg"
 import abi from "../asset/AlchemyMsg.json"
 
 const Week01 = () => {
@@ -78,7 +78,7 @@ const Week01 = () => {
 
   return (
     <Stack direction="column" spacing={1} alignItems="center">
-      <img src={alchemylogo} alt="logo"></img>
+      <img src={alchemyLogo} alt="logo"></img>
       <Button onClick={connectWallet} variant="contained">
         {hasMetamask ? (isConnected ? "Connected " + String(myAddr).substring(0, 6) + "..." + String(myAddr).substring(38) : "Connect MetaMask") : "Please install MetaMask"}
       </Button>
