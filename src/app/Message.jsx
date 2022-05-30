@@ -1,10 +1,9 @@
-// https://alchemymsg.netlify.app/
 // goerli
 import React, { useState, useEffect } from "react"
 import { ethers } from "ethers"
-import { Typography, TextField, Stack, Button } from "@mui/material"
+import { Stack, Button, Typography, TextField } from "@mui/material"
 import LoadingButton from "@mui/lab/LoadingButton"
-import SearchIcon from "@mui/icons-material/Search"
+import CreateIcon from "@mui/icons-material/Create"
 
 import alchemyLogo from "../asset/alchemyLogo.svg"
 import abi from "../asset/Message.json"
@@ -78,28 +77,33 @@ const Message = () => {
 
   return (
     <Stack direction="column" spacing={1} alignItems="center">
-      <img src={alchemyLogo} alt="logo"></img>
+      <img src={alchemyLogo} alt="Alchemy logo"></img>
+
       <Button onClick={connectWallet} variant="contained">
         {hasMetamask ? (isConnected ? "Connected " + String(myAddr).substring(0, 6) + "..." + String(myAddr).substring(38) : "Connect MetaMask") : "Please install MetaMask"}
       </Button>
-      <Typography variant="h6" gutterBottom>
+
+      <Typography sx={{ pt: 2, pb: 1 }} variant="h6">
         Current Message:
       </Typography>
-      <Typography variant="h6" gutterBottom>
+
+      <Typography sx={{ pb: 1 }} variant="h6">
         {msg}
       </Typography>
+
       <TextField
         onChange={(e) => {
           setNewMsg(e.target.value)
         }}
-        sx={{ width: 420 }}
+        sx={{ width: 420, pb: 2 }}
         id="newMsg"
         label="leave your message"
       />
+
       <LoadingButton
         loading={loading}
         loadingPosition="start"
-        startIcon={<SearchIcon />}
+        startIcon={<CreateIcon />}
         onClick={() => {
           handleClick()
           updateMessage()
