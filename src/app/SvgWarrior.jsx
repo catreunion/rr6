@@ -1,16 +1,13 @@
-// https://alchemysvg.netlify.app/
 // mumbai
 import React, { useState, useEffect } from "react"
 import { ethers } from "ethers"
 import { Stack, Button, TextField } from "@mui/material"
 import LoadingButton from "@mui/lab/LoadingButton"
-import SendIcon from "@mui/icons-material/Send"
-
-// import SearchIcon from "@mui/icons-material/Search"
+import AddReactionIcon from "@mui/icons-material/AddReaction"
+import FlashOnIcon from "@mui/icons-material/FlashOn"
 
 import alchemyLogo from "../asset/alchemyLogo.svg"
 import abi from "../asset/SvgWarrior.json"
-// import "../asset/Alchemy.css"
 
 const SvgWarrior = () => {
   const [hasMetamask, setHasMetamask] = useState(false)
@@ -19,7 +16,8 @@ const SvgWarrior = () => {
   const [myTokenID, setMyTokenID] = useState(0)
   const contractAddress = "0xD36738601a475c912273B52B429348b488b90989"
   const contractABI = abi.abi
-  const [loading, setLoading] = useState(false)
+  const [loading1, setLoading1] = useState(false)
+  const [loading2, setLoading2] = useState(false)
 
   useEffect(() => {
     if (typeof window.ethereum !== "undefined") {
@@ -41,8 +39,12 @@ const SvgWarrior = () => {
     }
   }
 
-  const handleClick = () => {
-    setLoading(true)
+  const handleClick1 = () => {
+    setLoading1(true)
+  }
+
+  const handleClick2 = () => {
+    setLoading2(true)
   }
 
   const mintNFT = async () => {
@@ -53,7 +55,7 @@ const SvgWarrior = () => {
         const contractInstance = new ethers.Contract(contractAddress, contractABI, signer)
         const tx = await contractInstance.mint()
         await tx.wait()
-        // setLoading(false)
+        setLoading1(false)
       } catch (err) {
         console.log(err)
       }
@@ -70,7 +72,7 @@ const SvgWarrior = () => {
         const contractInstance = new ethers.Contract(contractAddress, contractABI, signer)
         const tx = await contractInstance.train(myTokenID)
         await tx.wait()
-        // setLoading(false)
+        setLoading2(false)
       } catch (err) {
         console.log(err)
       }
@@ -85,11 +87,11 @@ const SvgWarrior = () => {
 
       <Stack direction="row" spacing={2}>
         <LoadingButton
-          loading={loading}
+          loading={loading1}
           loadingPosition="start"
-          startIcon={<SendIcon />}
+          startIcon={<AddReactionIcon />}
           onClick={() => {
-            handleClick()
+            handleClick1()
             mintNFT()
           }}
           size="medium"
@@ -107,11 +109,11 @@ const SvgWarrior = () => {
         <TextField onChange={(e) => setMyTokenID(e.target.value)} sx={{ width: 210 }} id="myTokenID" label="paste your Token ID here" />
 
         <LoadingButton
-          loading={loading}
+          loading={loading2}
           loadingPosition="end"
-          endIcon={<SendIcon />}
+          endIcon={<FlashOnIcon />}
           onClick={() => {
-            handleClick()
+            handleClick2()
             trainWarrior()
           }}
           size="medium"
