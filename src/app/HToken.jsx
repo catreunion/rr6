@@ -1,4 +1,3 @@
-// https://alchemyhht.netlify.app/
 // goerli
 import React, { useState, useEffect } from "react"
 import { ethers } from "ethers"
@@ -8,7 +7,6 @@ import SendIcon from "@mui/icons-material/Send"
 
 import alchemyLogo from "../asset/alchemyLogo.svg"
 import abi from "../asset/HToken.json"
-// import "../asset/Alchemy.css"
 
 const HToken = () => {
   const [hasMetamask, setHasMetamask] = useState(false)
@@ -90,8 +88,6 @@ const HToken = () => {
       <Typography sx={{ pt: 2, pb: 1 }} variant="h6">
         Balance of my Hardhat Token : {balance}
       </Typography>
-
-      <Typography sx={{ pb: 1 }} variant="h6"></Typography>
 
       <TextField onChange={(e) => setRecipientAddr(e.target.value)} sx={{ width: 420, pb: 3 }} id="recipientAddr" label="recipient wallet address" />
 

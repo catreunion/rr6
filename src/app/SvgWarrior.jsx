@@ -2,8 +2,10 @@
 // mumbai
 import React, { useState, useEffect } from "react"
 import { ethers } from "ethers"
-// import { Typography, TextField, Stack, Button } from "@mui/material"
-// import LoadingButton from "@mui/lab/LoadingButton"
+import { Stack, Button, TextField } from "@mui/material"
+import LoadingButton from "@mui/lab/LoadingButton"
+import SendIcon from "@mui/icons-material/Send"
+
 // import SearchIcon from "@mui/icons-material/Search"
 
 import alchemyLogo from "../asset/alchemyLogo.svg"
@@ -17,6 +19,7 @@ const SvgWarrior = () => {
   const [myTokenID, setMyTokenID] = useState(0)
   const contractAddress = "0xD36738601a475c912273B52B429348b488b90989"
   const contractABI = abi.abi
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     if (typeof window.ethereum !== "undefined") {
@@ -38,9 +41,9 @@ const SvgWarrior = () => {
     }
   }
 
-  // const handleClick = () => {
-  //   setLoading(true)
-  // }
+  const handleClick = () => {
+    setLoading(true)
+  }
 
   const mintNFT = async () => {
     if (typeof window.ethereum !== "undefined") {
@@ -77,26 +80,47 @@ const SvgWarrior = () => {
   }
 
   return (
-    <div className="App">
-      <div id="container">
-        <img id="logo" src={alchemyLogo} alt=""></img>
-        <button id="walletButton" onClick={connectWallet}>
+    <Stack direction="column" spacing={3} alignItems="center">
+      <img src={alchemyLogo} alt="Alchemy logo"></img>
+
+      <Stack direction="row" spacing={2}>
+        <LoadingButton
+          loading={loading}
+          loadingPosition="start"
+          startIcon={<SendIcon />}
+          onClick={() => {
+            handleClick()
+            mintNFT()
+          }}
+          size="medium"
+          variant="contained"
+        >
+          Mint NFT
+        </LoadingButton>
+
+        <Button onClick={connectWallet} variant="contained">
           {hasMetamask ? (isConnected ? "Connected " + String(myAddr).substring(0, 6) + "..." + String(myAddr).substring(38) : "Connect MetaMask") : "Please install MetaMask"}
-        </button>
+        </Button>
+      </Stack>
 
-        <h2 style={{ paddingTop: "18px" }}>Token ID :</h2>
-        <div>
-          <input type="number" placeholder="paste your Token ID here" onChange={(e) => setMyTokenID(e.target.value)} value={myTokenID} />
-        </div>
+      <Stack direction="row" spacing={2} alignItems="center">
+        <TextField onChange={(e) => setMyTokenID(e.target.value)} sx={{ width: 210 }} id="myTokenID" label="paste your Token ID here" />
 
-        <button id="publish" onClick={mintNFT}>
-          Mint
-        </button>
-        <button id="publish" onClick={trainWarrior}>
-          Train
-        </button>
-      </div>
-    </div>
+        <LoadingButton
+          loading={loading}
+          loadingPosition="end"
+          endIcon={<SendIcon />}
+          onClick={() => {
+            handleClick()
+            trainWarrior()
+          }}
+          size="medium"
+          variant="contained"
+        >
+          Train Warrior
+        </LoadingButton>
+      </Stack>
+    </Stack>
   )
 }
 
