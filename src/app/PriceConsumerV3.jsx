@@ -1,4 +1,3 @@
-// https://alchemymsg.netlify.app/
 // Kovan
 import React, { useState, useEffect } from "react"
 import { ethers } from "ethers"
@@ -9,11 +8,11 @@ import SearchIcon from "@mui/icons-material/Search"
 import alchemyLogo from "../asset/alchemyLogo.svg"
 import abi from "../asset/PriceConsumerV3.json"
 
-const Message = () => {
+const PriceConsumerV3 = () => {
   const [hasMetamask, setHasMetamask] = useState(false)
   const [isConnected, setIsConnected] = useState(false)
   const [myAddr, setMyAddr] = useState("")
-  const contractAddress = "0x649410729182A7faAceEf6eCda015592AdD22CAE"
+  const contractAddress = "0x893879E882763f781eB948FDB4561D02908D28aa"
   const contractABI = abi.abi
   const [price, setPrice] = useState(0)
   const [loading, setLoading] = useState(false)
@@ -30,7 +29,7 @@ const Message = () => {
         const [account] = await window.ethereum.request({ method: "eth_requestAccounts" })
         setMyAddr(account)
         setIsConnected(true)
-        // updatePrice()
+        updatePrice()
       } catch (err) {
         console.log(err)
       }
@@ -45,7 +44,8 @@ const Message = () => {
         const provider = new ethers.providers.Web3Provider(window.ethereum)
         const signer = provider.getSigner()
         const contractInstance = new ethers.Contract(contractAddress, contractABI, signer)
-        setPrice(await contractInstance.getLatestPrice())
+        setPrice((await contractInstance.getLatestPrice()).toString())
+        setLoading(false)
       } catch (err) {
         console.log(err)
       }
@@ -60,18 +60,14 @@ const Message = () => {
 
   return (
     <Stack direction="column" spacing={1} alignItems="center">
-      <img src={alchemyLogo} alt="logo"></img>
+      <img src={alchemyLogo} alt="Alchemy logo"></img>
 
       <Button onClick={connectWallet} variant="contained">
         {hasMetamask ? (isConnected ? "Connected " + String(myAddr).substring(0, 6) + "..." + String(myAddr).substring(38) : "Connect MetaMask") : "Please install MetaMask"}
       </Button>
 
-      <Typography variant="h6" gutterBottom>
-        Current Price of ETH / USD:
-      </Typography>
-
-      <Typography variant="h6" gutterBottom>
-        {price}
+      <Typography sx={{ p: 1 }} variant="h6" gutterBottom>
+        Current Price of ETH / USD: {price}
       </Typography>
 
       <LoadingButton
@@ -91,4 +87,4 @@ const Message = () => {
   )
 }
 
-export default Message
+export default PriceConsumerV3

@@ -5,6 +5,7 @@ import Layout from "./comp/Layout"
 import Home from "./page/Home"
 import NotFound from "./page/NotFound"
 
+import Gallery from "./app/Gallery"
 import HToken from "./app/HToken"
 import Message from "./app/Message"
 import PriceConsumerV3 from "./app/PriceConsumerV3"
@@ -19,6 +20,7 @@ const App = () => {
         <Route index element={<Home />} />
         <Route path="*" element={<NotFound />} />
 
+        <Route path="gallery" element={<Gallery />} />
         <Route path="token" element={<HToken />} />
         <Route path="message" element={<Message />} />
         <Route path="pricefeed" element={<PriceConsumerV3 />} />
