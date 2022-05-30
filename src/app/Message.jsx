@@ -84,7 +84,7 @@ const Message = () => {
       </Button>
 
       <Typography sx={{ pt: 2, pb: 1 }} variant="h6">
-        Current Message:
+        Current Message :
       </Typography>
 
       <Typography sx={{ pb: 1 }} variant="h6">
@@ -95,7 +95,7 @@ const Message = () => {
         onChange={(e) => {
           setNewMsg(e.target.value)
         }}
-        sx={{ width: 420, pb: 2 }}
+        sx={{ width: 420, pb: 3 }}
         id="newMsg"
         label="leave your message"
       />

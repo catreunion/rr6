@@ -2,9 +2,9 @@
 // goerli
 import React, { useState, useEffect } from "react"
 import { ethers } from "ethers"
-// import { Typography, TextField, Stack, Button } from "@mui/material"
-// import LoadingButton from "@mui/lab/LoadingButton"
-// import SearchIcon from "@mui/icons-material/Search"
+import { Typography, TextField, Stack, Button } from "@mui/material"
+import LoadingButton from "@mui/lab/LoadingButton"
+import SendIcon from "@mui/icons-material/Send"
 
 import alchemyLogo from "../asset/alchemyLogo.svg"
 import abi from "../asset/HToken.json"
@@ -18,6 +18,7 @@ const HToken = () => {
   const contractAddress = "0x892a25cBcbA3CFA34c6B4a49dAa908B0bf670676"
   const contractABI = abi.abi
   const [balance, setBalance] = useState("")
+  const [loading, setLoading] = useState(false)
   // const [amount, setAmount] = useState(0)
 
   useEffect(() => {
@@ -56,9 +57,9 @@ const HToken = () => {
     }
   }
 
-  // const handleClick = () => {
-  //   setLoading(true)
-  // }
+  const handleClick = () => {
+    setLoading(true)
+  }
 
   const sendETH = async () => {
     if (typeof window.ethereum !== "undefined") {
@@ -69,7 +70,7 @@ const HToken = () => {
         const tx = await contractInstance.transfer(recipientAddr, 100)
         await tx.wait()
         checkBalance()
-        // setLoading(false)
+        setLoading(false)
       } catch (err) {
         console.log(err)
       }
@@ -79,29 +80,46 @@ const HToken = () => {
   }
 
   return (
-    <div className="App">
-      <div id="container">
-        <img id="logo" src={alchemyLogo} alt=""></img>
-        <button id="walletButton" onClick={connectWallet}>
-          {hasMetamask ? (isConnected ? "Connected " + String(myAddr).substring(0, 6) + "..." + String(myAddr).substring(38) : "Connect MetaMask") : "Please install MetaMask"}
-        </button>
+    <Stack direction="column" spacing={1} alignItems="center">
+      <img src={alchemyLogo} alt="Alchemy logo"></img>
 
-        <h2 style={{ paddingTop: "50px" }}>Balance of my Hardhat Token :</h2>
-        <p>{balance}</p>
+      <Button onClick={connectWallet} variant="contained">
+        {hasMetamask ? (isConnected ? "Connected " + String(myAddr).substring(0, 6) + "..." + String(myAddr).substring(38) : "Connect MetaMask") : "Please install MetaMask"}
+      </Button>
 
-        <h2 style={{ paddingTop: "18px" }}>Recipient Wallet Address :</h2>
-        <div>
-          <input type="text" placeholder="Send 100 Hardhat Token" onChange={(e) => setRecipientAddr(e.target.value)} value={recipientAddr} />
-        </div>
+      <Typography sx={{ pt: 2, pb: 1 }} variant="h6">
+        Balance of my Hardhat Token : {balance}
+      </Typography>
 
-        <button id="publish" onClick={checkBalance}>
+      <Typography sx={{ pb: 1 }} variant="h6"></Typography>
+
+      <TextField onChange={(e) => setRecipientAddr(e.target.value)} sx={{ width: 420, pb: 3 }} id="recipientAddr" label="recipient wallet address" />
+
+      <Stack direction="row" spacing={2}>
+        <LoadingButton
+          loading={loading}
+          loadingPosition="end"
+          endIcon={<SendIcon />}
+          onClick={() => {
+            handleClick()
+            sendETH()
+          }}
+          size="medium"
+          variant="contained"
+        >
+          Send Token
+        </LoadingButton>
+        <Button
+          onClick={() => {
+            checkBalance()
+          }}
+          size="medium"
+          variant="contained"
+        >
           Check Balance
-        </button>
-        <button id="publish" onClick={sendETH}>
-          Send 100 Hardhat Token
-        </button>
-      </div>
-    </div>
+        </Button>{" "}
+      </Stack>
+    </Stack>
   )
 }
 
