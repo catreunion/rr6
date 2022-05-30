@@ -1,5 +1,5 @@
-// https://alchemyhht.netlify.app/
-// goerli
+// https://alchemysvg.netlify.app/
+// mumbai
 import React, { useState, useEffect } from "react"
 import { ethers } from "ethers"
 // import { Typography, TextField, Stack, Button } from "@mui/material"
@@ -7,18 +7,16 @@ import { ethers } from "ethers"
 // import SearchIcon from "@mui/icons-material/Search"
 
 import alchemyLogo from "../asset/alchemyLogo.svg"
-import abi from "../asset/HToken.json"
-import "../asset/Alchemy.css"
+import abi from "../asset/SvgWarrior.json"
+// import "../asset/Alchemy.css"
 
-const HToken = () => {
+const SvgWarrior = () => {
   const [hasMetamask, setHasMetamask] = useState(false)
   const [isConnected, setIsConnected] = useState(false)
   const [myAddr, setMyAddr] = useState("")
-  const [recipientAddr, setRecipientAddr] = useState("")
-  const contractAddress = "0x892a25cBcbA3CFA34c6B4a49dAa908B0bf670676"
+  const [myTokenID, setMyTokenID] = useState(0)
+  const contractAddress = "0xD36738601a475c912273B52B429348b488b90989"
   const contractABI = abi.abi
-  const [balance, setBalance] = useState("")
-  // const [amount, setAmount] = useState(0)
 
   useEffect(() => {
     if (typeof window.ethereum !== "undefined") {
@@ -32,22 +30,6 @@ const HToken = () => {
         const [account] = await window.ethereum.request({ method: "eth_requestAccounts" })
         setMyAddr(account)
         setIsConnected(true)
-        checkBalance()
-      } catch (err) {
-        console.log(err)
-      }
-    } else {
-      console.log("Please install MetaMask")
-    }
-  }
-
-  const checkBalance = async () => {
-    if (typeof window.ethereum !== "undefined") {
-      try {
-        const [account] = await window.ethereum.request({ method: "eth_requestAccounts" })
-        const provider = new ethers.providers.Web3Provider(window.ethereum)
-        const contractInstance = new ethers.Contract(contractAddress, contractABI, provider)
-        setBalance((await contractInstance.balanceOf(account)).toString())
       } catch (err) {
         console.log(err)
       }
@@ -60,15 +42,31 @@ const HToken = () => {
   //   setLoading(true)
   // }
 
-  const sendETH = async () => {
+  const mintNFT = async () => {
     if (typeof window.ethereum !== "undefined") {
       try {
         const provider = new ethers.providers.Web3Provider(window.ethereum)
         const signer = provider.getSigner()
         const contractInstance = new ethers.Contract(contractAddress, contractABI, signer)
-        const tx = await contractInstance.transfer(recipientAddr, 100)
+        const tx = await contractInstance.mint()
         await tx.wait()
-        checkBalance()
+        // setLoading(false)
+      } catch (err) {
+        console.log(err)
+      }
+    } else {
+      console.log("Please install MetaMask")
+    }
+  }
+
+  const trainWarrior = async () => {
+    if (typeof window.ethereum !== "undefined") {
+      try {
+        const provider = new ethers.providers.Web3Provider(window.ethereum)
+        const signer = provider.getSigner()
+        const contractInstance = new ethers.Contract(contractAddress, contractABI, signer)
+        const tx = await contractInstance.train(myTokenID)
+        await tx.wait()
         // setLoading(false)
       } catch (err) {
         console.log(err)
@@ -86,23 +84,20 @@ const HToken = () => {
           {hasMetamask ? (isConnected ? "Connected " + String(myAddr).substring(0, 6) + "..." + String(myAddr).substring(38) : "Connect MetaMask") : "Please install MetaMask"}
         </button>
 
-        <h2 style={{ paddingTop: "50px" }}>Balance of my Hardhat Token :</h2>
-        <p>{balance}</p>
-
-        <h2 style={{ paddingTop: "18px" }}>Recipient Wallet Address :</h2>
+        <h2 style={{ paddingTop: "18px" }}>Token ID :</h2>
         <div>
-          <input type="text" placeholder="Send 100 Hardhat Token" onChange={(e) => setRecipientAddr(e.target.value)} value={recipientAddr} />
+          <input type="number" placeholder="paste your Token ID here" onChange={(e) => setMyTokenID(e.target.value)} value={myTokenID} />
         </div>
 
-        <button id="publish" onClick={checkBalance}>
-          Check Balance
+        <button id="publish" onClick={mintNFT}>
+          Mint
         </button>
-        <button id="publish" onClick={sendETH}>
-          Send 100 Hardhat Token
+        <button id="publish" onClick={trainWarrior}>
+          Train
         </button>
       </div>
     </div>
   )
 }
 
-export default HToken
+export default SvgWarrior
